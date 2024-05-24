@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/tabs";
 import React from "react";
 import MyProfileForm from "./_components/MyProfileForm";
-import AddDogCard from "./_components/AddDogCard";
+import Dogs from "./_components/Dogs";
 
 const page = () => {
   return (
@@ -22,8 +22,11 @@ const page = () => {
         >
           <MyProfileForm />
         </TabsContent>
-        <TabsContent value="dogs">
-          <AddDogCard />
+        <TabsContent
+          value="dogs"
+          className="flex justify-center w-full"
+        >
+          <Dogs />
         </TabsContent>
       </Tabs>
     </div>

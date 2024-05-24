@@ -2,18 +2,18 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 import React, { memo } from "react";
 
-type AddDogCardProps = {
+type DogCardProps = {
   onClick: () => void;
 };
 
-const AddDogCard = ({ onClick }: AddDogCardProps) => {
+const DogCard = ({ onClick }: DogCardProps) => {
   return (
     <Card onClick={onClick} className="cursor-pointer">
       <CardHeader className="flex items-center justify-center">
-        <Plus className="w-10 h-10" />
+        Кличка - Лея
       </CardHeader>
     </Card>
   );
 };
 
-export default memo(AddDogCard);
+export default memo(DogCard);
