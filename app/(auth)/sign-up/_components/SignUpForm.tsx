@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -26,28 +26,12 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@/components/ui/radio-group";
-
-export const signUpFormSchema = z.object({
-  firstName: z.string().min(1, { message: "Имя обязательно" }),
-  lastName: z.string().min(1, { message: "Фамилия обязателна" }),
-  email: z
-    .string()
-    .min(1, { message: "Email обязателен" })
-    .email({ message: "Неправильный формат email" }),
-  password: z
-    .string()
-    .min(1, "Пароль обязателен")
-    .regex(/^\S*$/, { message: "Пробелы не разрешены" })
-    .min(6, "Пароль должен содержать минимум 6 символов"),
-  dateOfBirth: z.date({
-    required_error: "Дата Рождения обязательна",
-  }),
-  sex: z.enum(["Мужской", "Женский"], {
-    required_error: "Пол обязателен",
-  }),
-});
+import signUp from "../_actions/signUp";
+import signUpFormSchema from "../_schemas/signUpSchema";
 
 const SignUpForm = () => {
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
     defaultValues: {
@@ -61,9 +45,16 @@ const SignUpForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof signUpFormSchema>) {
-    console.log({ signUp: values });
-  }
+  const onSubmit = async (
+    values: z.infer<typeof signUpFormSchema>
+  ) => {
+    startTransition(() => {
+      signUp(values).then((data) => {
+        console.log(data.error);
+        console.log(data.success);
+      });
+    });
+  };
 
   return (
     <Form {...form}>
@@ -78,7 +69,11 @@ const SignUpForm = () => {
             <FormItem>
               <FormLabel>Имя</FormLabel>
               <FormControl>
-                <Input placeholder="Имя" {...field} />
+                <Input
+                  placeholder="Имя"
+                  {...field}
+                  disabled={isPending}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -91,7 +86,11 @@ const SignUpForm = () => {
             <FormItem>
               <FormLabel>Фамилия</FormLabel>
               <FormControl>
-                <Input placeholder="Фамилия" {...field} />
+                <Input
+                  placeholder="Фамилия"
+                  {...field}
+                  disabled={isPending}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -104,7 +103,12 @@ const SignUpForm = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Email" type="email" {...field} />
+                <Input
+                  placeholder="Email"
+                  type="email"
+                  {...field}
+                  disabled={isPending}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -121,6 +125,7 @@ const SignUpForm = () => {
                   placeholder="Пароль"
                   type="password"
                   {...field}
+                  disabled={isPending}
                 />
               </FormControl>
               <FormMessage />
@@ -137,6 +142,7 @@ const SignUpForm = () => {
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
+                      disabled={isPending}
                       variant={"outline"}
                       className={cn(
                         "w-full pl-3 text-left font-normal",
@@ -175,6 +181,7 @@ const SignUpForm = () => {
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                   className="flex space-x-1"
+                  disabled={isPending}
                 >
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
@@ -198,7 +205,7 @@ const SignUpForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={isPending}>
           Зарегистрироваться
         </Button>
       </form>
