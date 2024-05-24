@@ -9,6 +9,7 @@ import MyProfileForm from "./_components/MyProfileForm";
 import Dogs from "./_components/Dogs";
 
 const page = () => {
+  console.log("deploy please");
   return (
     <div>
       <Tabs defaultValue="profile" className="w-full">
