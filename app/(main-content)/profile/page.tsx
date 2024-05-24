@@ -7,9 +7,14 @@ import {
 import React from "react";
 import MyProfileForm from "./_components/MyProfileForm";
 import Dogs from "./_components/Dogs";
+import { auth, nextAuthSignOut } from "@/auth";
+import { Button } from "@/components/ui/button";
+import signOut from "./_actions/signOut";
+import { authRoutes } from "@/routes";
 
-const page = () => {
-  console.log("deploy please");
+const page = async () => {
+  const session = await auth();
+
   return (
     <div>
       <Tabs defaultValue="profile" className="w-full">
@@ -19,9 +24,23 @@ const page = () => {
         </TabsList>
         <TabsContent
           value="profile"
-          className="flex justify-center w-full"
+          className="flex flex-col items-center w-full"
         >
-          <MyProfileForm />
+          <MyProfileForm session={session} />
+          <form
+            action={async () => {
+              "use server";
+
+              await nextAuthSignOut({ redirectTo: authRoutes[0] });
+            }}
+          >
+            <Button
+              type="submit"
+              className="bg-red-600 text-white mt-2 w-[500px]"
+            >
+              Выйти
+            </Button>
+          </form>
         </TabsContent>
         <TabsContent
           value="dogs"

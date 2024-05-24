@@ -2,8 +2,9 @@
 
 import { z } from "zod";
 import signInFormSchema from "../_schemas/signInSchema";
-import getUserByEmail from "../../sign-up/_actions/getUserByEmail";
-import { SHA256, enc } from "crypto-js";
+import { protectedRoutes, publicRoutes } from "@/routes";
+import { AuthError } from "next-auth";
+import { nextAuthSignIn } from "@/auth";
 
 const signIn = async (values: z.infer<typeof signInFormSchema>) => {
   const validatedFields = signInFormSchema.safeParse(values);
@@ -14,35 +15,24 @@ const signIn = async (values: z.infer<typeof signInFormSchema>) => {
 
   const { email, password } = validatedFields.data;
 
-  const existingUser = await getUserByEmail(email);
+  try {
+    await nextAuthSignIn("credentials", {
+      email,
+      password,
+      redirectTo: publicRoutes[0],
+    });
+  } catch (err) {
+    if (err instanceof AuthError) {
+      switch (err.type) {
+        case "CredentialsSignin":
+          return { error: "Invalid credentials" };
+        default:
+          return { error: "SMTH went wrong" };
+      }
+    }
 
-  var hash = SHA256(password);
-  const newHash = hash.toString(enc.Hex);
-
-  if (newHash === existingUser?.password) {
-    console.log("hahahha nice!!!");
-  } else {
-    console.log("noooooooo");
+    throw err;
   }
-
-  // try {
-  //   await signIn("credentials", {
-  //     email,
-  //     password,
-  //     redirectTo: protectedRoutes[0],
-  //   });
-  // } catch (err) {
-  //   if (err instanceof AuthError) {
-  //     switch (err.type) {
-  //       case "CredentialsSignin":
-  //         return { error: "Invalid credentials" };
-  //       default:
-  //         return { error: "SMTH went wrong" };
-  //     }
-  //   }
-
-  //   throw err;
-  // }
 };
 
 export default signIn;
