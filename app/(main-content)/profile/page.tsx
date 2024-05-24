@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/tabs";
 import React from "react";
 import MyProfileForm from "./_components/MyProfileForm";
+import AddDogCard from "./_components/AddDogCard";
 
 const page = () => {
   return (
@@ -21,7 +22,9 @@ const page = () => {
         >
           <MyProfileForm />
         </TabsContent>
-        <TabsContent value="dogs">Собаки</TabsContent>
+        <TabsContent value="dogs">
+          <AddDogCard />
+        </TabsContent>
       </Tabs>
     </div>
   );
