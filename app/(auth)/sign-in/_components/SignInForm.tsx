@@ -39,7 +39,7 @@ const SignInForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 w-[500px]"
+        className="space-y-2 w-[500px]"
       >
         <FormField
           control={form.control}

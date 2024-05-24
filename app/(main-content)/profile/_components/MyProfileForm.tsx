@@ -1,5 +1,7 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Form,
   FormControl,
@@ -9,25 +11,24 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 import {
   RadioGroup,
   RadioGroupItem,
 } from "@/components/ui/radio-group";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-export const signUpFormSchema = z.object({
+export const myProfileFormSchema = z.object({
   firstName: z.string().min(1, { message: "Имя обязательно" }),
   lastName: z.string().min(1, { message: "Фамилия обязателна" }),
   email: z
@@ -47,9 +48,9 @@ export const signUpFormSchema = z.object({
   }),
 });
 
-const SignUpForm = () => {
-  const form = useForm<z.infer<typeof signUpFormSchema>>({
-    resolver: zodResolver(signUpFormSchema),
+const MyProfileForm = () => {
+  const form = useForm<z.infer<typeof myProfileFormSchema>>({
+    resolver: zodResolver(myProfileFormSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -61,8 +62,8 @@ const SignUpForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof signUpFormSchema>) {
-    console.log({ signUp: values });
+  function onSubmit(values: z.infer<typeof myProfileFormSchema>) {
+    console.log({ profile: values });
   }
 
   return (
@@ -199,11 +200,11 @@ const SignUpForm = () => {
           )}
         />
         <Button type="submit" className="w-full">
-          Зарегистрироваться
+          Сохранить
         </Button>
       </form>
     </Form>
   );
 };
 
-export default SignUpForm;
+export default MyProfileForm;

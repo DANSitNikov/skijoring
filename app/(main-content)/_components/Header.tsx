@@ -52,10 +52,19 @@ const Header = () => {
         </Link>
       </div>
       <div>
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>DS</AvatarFallback>
-        </Avatar>
+        <Link
+          href="/profile"
+          className={
+            checkIfLinkIsActive("profile")
+              ? "[&_span]:border-2 [&_span]:border-blue-600"
+              : "[&_span]:border-0"
+          }
+        >
+          <Avatar>
+            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback>DS</AvatarFallback>
+          </Avatar>
+        </Link>
       </div>
     </div>
   );
