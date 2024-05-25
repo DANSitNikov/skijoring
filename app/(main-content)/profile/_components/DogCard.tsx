@@ -1,17 +1,37 @@
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Plus } from "lucide-react";
 import React, { memo } from "react";
 
 type DogCardProps = {
-  onClick: () => void;
+  id: string;
+  name: string;
+  userId: string;
+  onClick: ({
+    id,
+    name,
+    userId,
+  }: {
+    id: string;
+    name: string;
+    userId: string;
+  }) => void;
 };
 
-const DogCard = ({ onClick }: DogCardProps) => {
+const DogCard = ({ id, name, userId, onClick }: DogCardProps) => {
   return (
-    <Card onClick={onClick} className="cursor-pointer">
+    <Card
+      onClick={() => onClick({ id, name, userId })}
+      className="cursor-pointer"
+    >
       <CardHeader className="flex items-center justify-center">
-        Кличка - Лея
+        Кличка - {name}
       </CardHeader>
+      <CardDescription>id - {id}</CardDescription>
     </Card>
   );
 };

@@ -20,16 +20,17 @@ enum UserRole {
 
 model User {
   id            String    @id @default(cuid())
-  firstName     String?
-  lastName      String?
-  sex           String?
-  dateOfBirth   DateTime?
-  email         String?   @unique
+  firstName     String
+  lastName      String
+  sex           String
+  dateOfBirth   DateTime
+  email         String    @unique
   emailVerified DateTime? @map("email_verified")
   image         String?
-  password      String?
+  password      String
   role          UserRole  @default(USER)
   accounts      Account[]
+  dogs          Dog[]
 
   @@map("users")
 }
@@ -52,4 +53,13 @@ model Account {
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
+}
+
+model Dog {
+  id     String @id @default(cuid())
+  name   String
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("dogs")
 }

@@ -11,24 +11,40 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import editDog from "../_actions/editDog";
 
 export const editDogFormSchema = z.object({
   name: z.string().min(1, { message: "Кличка обязательна" }),
 });
 
-const EditDogForm = () => {
+type EditDogFormProps = {
+  dog: {
+    id: string;
+    name: string;
+    userId: string;
+  };
+};
+
+const EditDogForm = ({ dog }: EditDogFormProps) => {
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof editDogFormSchema>>({
     resolver: zodResolver(editDogFormSchema),
     defaultValues: {
-      name: "",
+      name: dog.name,
     },
   });
 
   function onSubmit(values: z.infer<typeof editDogFormSchema>) {
-    console.log({ dog: values });
+    startTransition(() => {
+      editDog(dog.id, values.name).then((data) => {
+        // console.log(data.error);
+        console.log(data.success);
+      });
+    });
   }
 
   return (

@@ -11,9 +11,14 @@ import { auth, nextAuthSignOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import signOut from "./_actions/signOut";
 import { authRoutes } from "@/routes";
+import getDogs from "./_actions/getDogs";
 
 const page = async () => {
   const session = await auth();
+
+  const dogs = await getDogs();
+
+  console.log("dogs in return", dogs);
 
   return (
     <div>
@@ -46,7 +51,7 @@ const page = async () => {
           value="dogs"
           className="flex justify-center w-full"
         >
-          <Dogs />
+          <Dogs dogs={dogs} />
         </TabsContent>
       </Tabs>
     </div>
