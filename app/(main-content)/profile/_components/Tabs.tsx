@@ -13,16 +13,6 @@ const ProfileTabs = ({ children }: ProfileTabsProps) => {
 
   const activeTab = searchParams.get("tab");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("/api/dogs");
-      const result = await response.json();
-      console.log({ result });
-    };
-
-    fetchData();
-  }, []);
-
   return (
     <Tabs
       value={

@@ -11,10 +11,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useTransition } from "react";
+import React, { useEffect, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import editDog from "../_actions/editDog";
+import getDog from "../_actions/getDog";
 
 export const editDogFormSchema = z.object({
   name: z.string().min(1, { message: "Кличка обязательна" }),
@@ -46,6 +47,11 @@ const EditDogForm = ({ dog }: EditDogFormProps) => {
       });
     });
   }
+
+  useEffect(() => {
+    console.log("get dog use effect");
+    getDog(dog.id);
+  }, [dog.id]);
 
   return (
     <Form {...form}>
