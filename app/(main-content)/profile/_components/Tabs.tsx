@@ -2,7 +2,7 @@
 
 import { Tabs } from "@/components/ui/tabs";
 import { useSearchParams } from "next/navigation";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 
 type ProfileTabsProps = {
   children: ReactNode;
@@ -12,6 +12,16 @@ const ProfileTabs = ({ children }: ProfileTabsProps) => {
   const searchParams = useSearchParams();
 
   const activeTab = searchParams.get("tab");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch("/api/dogs");
+      const result = await response.json();
+      console.log({ result });
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <Tabs
