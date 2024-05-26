@@ -18,8 +18,6 @@ const page = async () => {
 
   const dogs = await getDogs();
 
-  console.log("dogs in return", dogs);
-
   return (
     <div>
       <Tabs defaultValue="profile" className="w-full">
