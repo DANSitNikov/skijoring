@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import signOut from "./_actions/signOut";
 import { authRoutes } from "@/routes";
 import getDogs from "./_actions/getDogs";
+import Link from "next/link";
+import ProfileTabs from "./_components/Tabs";
 
 const page = async () => {
   const session = await auth();
@@ -20,10 +22,14 @@ const page = async () => {
 
   return (
     <div>
-      <Tabs defaultValue="profile" className="w-full">
+      <ProfileTabs>
         <TabsList className="mb-2">
-          <TabsTrigger value="profile">Мой Профиль</TabsTrigger>
-          <TabsTrigger value="dogs">Собаки</TabsTrigger>
+          <TabsTrigger asChild value="profile">
+            <Link href="/profile?tab=personal-data">Мой Профиль</Link>
+          </TabsTrigger>
+          <TabsTrigger value="dogs">
+            <Link href="/profile?tab=my-dogs">Собаки</Link>
+          </TabsTrigger>
         </TabsList>
         <TabsContent
           value="profile"
@@ -34,7 +40,9 @@ const page = async () => {
             action={async () => {
               "use server";
 
-              await nextAuthSignOut({ redirectTo: authRoutes[0] });
+              await nextAuthSignOut({
+                redirectTo: authRoutes[0],
+              });
             }}
           >
             <Button
@@ -51,7 +59,7 @@ const page = async () => {
         >
           <Dogs dogs={dogs} />
         </TabsContent>
-      </Tabs>
+      </ProfileTabs>
     </div>
   );
 };

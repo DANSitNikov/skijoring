@@ -60,13 +60,17 @@ const EditDogForm = ({ dog }: EditDogFormProps) => {
             <FormItem>
               <FormLabel>Кличка</FormLabel>
               <FormControl>
-                <Input placeholder="Кличка" {...field} />
+                <Input
+                  placeholder="Кличка"
+                  {...field}
+                  disabled={isPending}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={isPending}>
           Сохранить
         </Button>
       </form>
