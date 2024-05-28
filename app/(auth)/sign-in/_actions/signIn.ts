@@ -10,7 +10,7 @@ const signIn = async (values: z.infer<typeof signInFormSchema>) => {
   const validatedFields = signInFormSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: "Invalid Fields" };
+    return { error: "Не все поля заполнены" };
   }
 
   const { email, password } = validatedFields.data;
@@ -25,9 +25,9 @@ const signIn = async (values: z.infer<typeof signInFormSchema>) => {
     if (err instanceof AuthError) {
       switch (err.type) {
         case "CredentialsSignin":
-          return { error: "Invalid credentials" };
+          return { error: "Неправильный email или пароль" };
         default:
-          return { error: "SMTH went wrong" };
+          return { error: "Что-то пошло не так" };
       }
     }
 

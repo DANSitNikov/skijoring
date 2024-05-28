@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const page = () => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 max-w-[500px] w-full">
       <SignInForm />
       <Button
         variant="link"

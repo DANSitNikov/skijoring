@@ -10,7 +10,7 @@ const signUp = async (values: z.infer<typeof signUpFormSchema>) => {
   const validatedFields = signUpFormSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: "Invalid Fields" };
+    return { error: "Не все поля заполнены" };
   }
 
   const { email, password, ...rest } = validatedFields.data;
@@ -22,14 +22,14 @@ const signUp = async (values: z.infer<typeof signUpFormSchema>) => {
   const existing = await getUserByEmail(email);
 
   if (existing) {
-    return { error: "Email in use" };
+    return { error: "Email уже используется" };
   }
 
   await prisma.user.create({
     data: { email, password: hashedPassword2, ...rest },
   });
 
-  return { success: "Email Sent!" };
+  return { success: "Аккаунт создан! Пожалуйста войдите в него" };
 };
 
 export default signUp;

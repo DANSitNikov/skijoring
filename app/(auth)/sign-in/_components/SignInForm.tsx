@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import signInFormSchema from "../_schemas/signInSchema";
 import signIn from "../_actions/signIn";
+import { toast } from "sonner";
 
 const SignInForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -33,18 +34,16 @@ const SignInForm = () => {
   ) => {
     startTransition(() => {
       signIn(values).then((data) => {
-        console.log(data?.error);
-        // console.log(data?.success);
+        if (data?.error) {
+          toast.error(data?.error);
+        }
       });
     });
   };
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-2 w-[500px]"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="email"
@@ -81,7 +80,11 @@ const SignInForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" disabled={isPending}>
+        <Button
+          type="submit"
+          className="w-full mt-6"
+          disabled={isPending}
+        >
           Войти
         </Button>
       </form>

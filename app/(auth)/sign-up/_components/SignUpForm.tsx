@@ -28,9 +28,12 @@ import {
 } from "@/components/ui/radio-group";
 import signUp from "../_actions/signUp";
 import signUpFormSchema from "../_schemas/signUpSchema";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const SignUpForm = () => {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
@@ -50,18 +53,19 @@ const SignUpForm = () => {
   ) => {
     startTransition(() => {
       signUp(values).then((data) => {
-        console.log(data.error);
-        console.log(data.success);
+        if (data?.error) {
+          toast.error(data?.error);
+        } else if (data?.success) {
+          toast.success(data?.success);
+          router.push("/sign-in");
+        }
       });
     });
   };
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-2 w-[500px]"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="firstName"
@@ -205,7 +209,11 @@ const SignUpForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" disabled={isPending}>
+        <Button
+          type="submit"
+          className="w-full mt-6"
+          disabled={isPending}
+        >
           Зарегистрироваться
         </Button>
       </form>
