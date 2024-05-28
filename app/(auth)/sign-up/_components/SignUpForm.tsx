@@ -141,7 +141,7 @@ const SignUpForm = () => {
           name="dateOfBirth"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Date of birth</FormLabel>
+              <FormLabel>Дата Рождения</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -154,9 +154,9 @@ const SignUpForm = () => {
                       )}
                     >
                       {field.value ? (
-                        format(field.value, "PPP")
+                        format(field.value, "dd/MM/yyyy")
                       ) : (
-                        <span>Pick a date</span>
+                        <span>Дата Рождения</span>
                       )}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
