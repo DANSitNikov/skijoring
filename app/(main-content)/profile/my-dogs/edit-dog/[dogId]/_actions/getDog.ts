@@ -10,8 +10,6 @@ const getDog = async (id: string) => {
     where: { id },
   });
 
-  console.log("found it", dog);
-
   return dog || [];
 };
 

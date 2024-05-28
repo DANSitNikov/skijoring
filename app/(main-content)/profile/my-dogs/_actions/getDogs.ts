@@ -2,6 +2,11 @@
 
 import { auth } from "@/auth";
 import prisma from "@/lib/db";
+import { Dog } from "@/types/types";
+
+const sortByDate = (a: Dog, b: Dog) => {
+  return a.createdAt.getTime() - b.createdAt.getTime();
+};
 
 const getDogs = async () => {
   const session = await auth();
@@ -10,7 +15,9 @@ const getDogs = async () => {
     where: { userId: session?.user.id },
   });
 
-  return dogs || [];
+  const sortedDogs = (dogs || []).sort(sortByDate);
+
+  return sortedDogs;
 };
 
 export default getDogs;

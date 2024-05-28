@@ -11,12 +11,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useState, useTransition } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import editDog from "../_actions/editDog";
 import getDog from "../_actions/getDog";
 import { useRouter } from "next/navigation";
+import deleteDog from "../_actions/deleteDog";
 
 export const editDogFormSchema = z.object({
   name: z.string().min(1, { message: "Кличка обязательна" }),
@@ -49,6 +55,15 @@ const EditDogForm = ({ dogId }: any) => {
       });
     });
   }
+
+  const onDelete = useCallback(() => {
+    startTransition(() => {
+      deleteDog(dogId).then(() => {
+        console.log("delteed");
+        router.push("/profile/my-dogs");
+      });
+    });
+  }, [dogId, router]);
 
   useEffect(() => {
     startTransition(() => {
@@ -88,6 +103,13 @@ const EditDogForm = ({ dogId }: any) => {
           Сохранить
         </Button>
       </form>
+      <Button
+        disabled={isPending}
+        onClick={onDelete}
+        className="bg-red-600 text-white mt-2 w-[500px]"
+      >
+        Удалить
+      </Button>
     </Form>
   );
 };
