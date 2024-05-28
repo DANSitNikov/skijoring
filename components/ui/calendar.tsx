@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker } from "react-day-picker";
+import { ru } from "date-fns/locale";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -17,6 +17,8 @@ function Calendar({
 }: CalendarProps) {
   return (
     <DayPicker
+      locale={ru}
+      weekStartsOn={1}
       fromYear={1950}
       toYear={new Date().getFullYear()}
       captionLayout="dropdown"
