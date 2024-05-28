@@ -28,7 +28,6 @@ import { CalendarIcon } from "lucide-react";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import signOut from "../_actions/signOut";
 import { Session } from "next-auth";
 
 export const myProfileFormSchema = z.object({

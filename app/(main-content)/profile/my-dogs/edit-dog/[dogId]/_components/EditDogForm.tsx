@@ -11,47 +11,55 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import editDog from "../_actions/editDog";
 import getDog from "../_actions/getDog";
+import { useRouter } from "next/navigation";
 
 export const editDogFormSchema = z.object({
   name: z.string().min(1, { message: "Кличка обязательна" }),
 });
 
-type EditDogFormProps = {
-  dog: {
-    id: string;
-    name: string;
-    userId: string;
-  };
+type Dog = {
+  id: string;
+  name: string;
+  userId: string;
 };
 
-const EditDogForm = ({ dog }: EditDogFormProps) => {
+const EditDogForm = ({ dogId }: any) => {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof editDogFormSchema>>({
     resolver: zodResolver(editDogFormSchema),
     defaultValues: {
-      name: dog.name,
+      name: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof editDogFormSchema>) {
     startTransition(() => {
-      editDog(dog.id, values.name).then((data) => {
+      editDog(dogId, values.name).then((data) => {
         // console.log(data.error);
         console.log(data.success);
+
+        router.push("/profile/my-dogs");
       });
     });
   }
 
   useEffect(() => {
-    console.log("get dog use effect");
-    getDog(dog.id);
-  }, [dog.id]);
+    startTransition(() => {
+      getDog(dogId).then((data) => {
+        form.reset({
+          // @ts-ignore
+          name: data.name,
+        });
+      });
+    });
+  }, [dogId, form]);
 
   return (
     <Form {...form}>

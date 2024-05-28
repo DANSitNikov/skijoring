@@ -16,9 +16,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import addDogFormSchema from "../_schemas/addDogFormSchema";
 import addDog from "../_actions/addDog";
+import { useRouter } from "next/navigation";
 
 const AddDogForm = () => {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof addDogFormSchema>>({
     resolver: zodResolver(addDogFormSchema),
@@ -34,6 +36,8 @@ const AddDogForm = () => {
       addDog(values).then((data) => {
         console.log(data.error);
         console.log(data.success);
+
+        router.push("/profile/my-dogs");
       });
     });
   };

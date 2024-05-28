@@ -57,7 +57,7 @@ const Header = ({ session }: { session: Session | null }) => {
       <div>
         {session ? (
           <Link
-            href="/profile"
+            href="/profile/profile"
             className={
               checkIfLinkIsActive("profile")
                 ? "[&_span]:border-2 [&_span]:border-blue-600"

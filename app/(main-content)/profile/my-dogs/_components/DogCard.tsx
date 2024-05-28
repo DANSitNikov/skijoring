@@ -1,31 +1,27 @@
+"use client";
+
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Plus } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 import React, { memo } from "react";
 
 type DogCardProps = {
   id: string;
   name: string;
   userId: string;
-  onClick: ({
-    id,
-    name,
-    userId,
-  }: {
-    id: string;
-    name: string;
-    userId: string;
-  }) => void;
 };
 
-const DogCard = ({ id, name, userId, onClick }: DogCardProps) => {
+const DogCard = ({ id, name, userId }: DogCardProps) => {
+  const pathname = usePathname();
+  const router = useRouter();
+
   return (
     <Card
-      onClick={() => onClick({ id, name, userId })}
+      onClick={() => router.push(pathname + `/edit-dog/${id}`)}
       className="cursor-pointer"
     >
       <CardHeader className="flex items-center justify-center">
