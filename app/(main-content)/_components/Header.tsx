@@ -7,6 +7,11 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+  authRoutes,
+  protectedRoutes,
+  publicRoutes,
+} from "@/routes/routes";
 import { PawPrint } from "lucide-react";
 import { Session } from "next-auth";
 import Link from "next/link";
@@ -30,11 +35,13 @@ const Header = ({ session }: { session: Session | null }) => {
   return (
     <div className="w-full p-4 flex justify-between items-center border-b-2 border-b-black">
       <div>
-        <PawPrint />
+        <Link href={publicRoutes.events}>
+          <PawPrint />
+        </Link>
       </div>
       <div className="flex items-center space-x-4">
         <Link
-          href="/events"
+          href={publicRoutes.events}
           className={
             checkIfLinkIsActive("events")
               ? "font-bold"
@@ -57,7 +64,7 @@ const Header = ({ session }: { session: Session | null }) => {
       <div>
         {session ? (
           <Link
-            href="/profile/profile"
+            href={protectedRoutes.profile}
             className={
               checkIfLinkIsActive("profile")
                 ? "[&_span]:border-2 [&_span]:border-blue-600"
@@ -83,7 +90,9 @@ const Header = ({ session }: { session: Session | null }) => {
             size="sm"
             asChild
           >
-            <Link href="/sign-in">Войти/Зарегистрироваться</Link>
+            <Link href={authRoutes.signIn}>
+              Войти/Зарегистрироваться
+            </Link>
           </Button>
         )}
       </div>

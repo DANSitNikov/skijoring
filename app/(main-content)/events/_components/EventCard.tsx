@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { publicRoutes } from "@/routes/routes";
 import Link from "next/link";
 import React, { memo } from "react";
 
@@ -26,7 +28,7 @@ const EventCard = ({ id }: EventCardProps) => {
       </CardContent>
       <CardFooter>
         <Button asChild>
-          <Link href={`/events/${id}`}>Перейти</Link>
+          <Link href={publicRoutes.event(String(id))}>Перейти</Link>
         </Button>
       </CardFooter>
     </Card>

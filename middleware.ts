@@ -4,8 +4,10 @@ import {
   authRoutes,
   protectedRoutes,
   publicRoutes,
-} from "./routes";
+} from "./routes/routes";
 import authConfig from "./auth.config";
+import { middlewarePublicRoutes } from "./routes/middlewareRoutes";
+import { match } from "node-match-path";
 
 export const { auth } = NextAuth(authConfig);
 
@@ -15,8 +17,12 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
-  const isAuthRoutes = authRoutes.includes(nextUrl.pathname);
+  const isPublicRoute = Object.values(middlewarePublicRoutes).some(
+    (url) => match(url, nextUrl.pathname).matches
+  );
+  const isAuthRoutes = Object.values(authRoutes).includes(
+    nextUrl.pathname
+  );
 
   if (isApiAuthRoute) {
     return null;
@@ -24,14 +30,14 @@ export default auth((req) => {
 
   if (isAuthRoutes) {
     if (isLoggedIn) {
-      return Response.redirect(new URL(publicRoutes[0], nextUrl));
+      return Response.redirect(new URL(publicRoutes.events, nextUrl));
     }
 
     return null;
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL(authRoutes[0], nextUrl));
+    return Response.redirect(new URL(authRoutes.signIn, nextUrl));
   }
 
   return null;

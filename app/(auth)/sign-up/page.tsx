@@ -2,6 +2,7 @@ import React from "react";
 import SignUpForm from "./_components/SignUpForm";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { authRoutes } from "@/routes/routes";
 
 const page = () => {
   return (
@@ -13,7 +14,9 @@ const page = () => {
         size="sm"
         asChild
       >
-        <Link href="/sign-in">Уже Есть Аккаунт? Войдите!</Link>
+        <Link href={authRoutes.signIn}>
+          Уже Есть Аккаунт? Войдите!
+        </Link>
       </Button>
     </div>
   );

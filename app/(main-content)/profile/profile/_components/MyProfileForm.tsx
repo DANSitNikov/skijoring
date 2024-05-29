@@ -21,7 +21,6 @@ import {
   RadioGroupItem,
 } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
-import { authRoutes } from "@/routes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";

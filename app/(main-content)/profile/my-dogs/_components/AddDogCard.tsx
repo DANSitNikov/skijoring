@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { protectedRoutes } from "@/routes/routes";
 import { Plus } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { memo } from "react";
@@ -11,7 +12,7 @@ const AddDogCard = () => {
 
   return (
     <Card
-      onClick={() => router.push(pathname + "/add-new-dog")}
+      onClick={() => router.push(protectedRoutes.addNewDog)}
       className="cursor-pointer"
     >
       <CardHeader className="flex items-center justify-center">

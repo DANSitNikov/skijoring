@@ -1,9 +1,9 @@
 import React from "react";
 import { auth, nextAuthSignOut } from "@/auth";
 import { TabsContent } from "@/components/ui/tabs";
-import { authRoutes } from "@/routes";
 import { Button } from "@/components/ui/button";
 import MyProfileForm from "./_components/MyProfileForm";
+import { authRoutes } from "@/routes/routes";
 
 const page = async () => {
   const session = await auth();
@@ -19,7 +19,7 @@ const page = async () => {
           "use server";
 
           await nextAuthSignOut({
-            redirectTo: authRoutes[0],
+            redirectTo: authRoutes.signIn,
           });
         }}
       >

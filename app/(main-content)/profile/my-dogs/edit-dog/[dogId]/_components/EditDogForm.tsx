@@ -23,6 +23,7 @@ import editDog from "../_actions/editDog";
 import getDog from "../_actions/getDog";
 import { useRouter } from "next/navigation";
 import deleteDog from "../_actions/deleteDog";
+import { protectedRoutes } from "@/routes/routes";
 
 export const editDogFormSchema = z.object({
   name: z.string().min(1, { message: "Кличка обязательна" }),
@@ -51,7 +52,7 @@ const EditDogForm = ({ dogId }: any) => {
         // console.log(data.error);
         console.log(data.success);
 
-        router.push("/profile/my-dogs");
+        router.push(protectedRoutes.myDogs);
       });
     });
   }
@@ -60,7 +61,7 @@ const EditDogForm = ({ dogId }: any) => {
     startTransition(() => {
       deleteDog(dogId).then(() => {
         console.log("delteed");
-        router.push("/profile/my-dogs");
+        router.push(protectedRoutes.myDogs);
       });
     });
   }, [dogId, router]);

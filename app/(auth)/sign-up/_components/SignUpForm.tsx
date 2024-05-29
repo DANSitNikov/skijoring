@@ -30,6 +30,7 @@ import signUp from "../_actions/signUp";
 import signUpFormSchema from "../_schemas/signUpSchema";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { authRoutes } from "@/routes/routes";
 
 const SignUpForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -57,7 +58,7 @@ const SignUpForm = () => {
           toast.error(data?.error);
         } else if (data?.success) {
           toast.success(data?.success);
-          router.push("/sign-in");
+          router.push(authRoutes.signIn);
         }
       });
     });

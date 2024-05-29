@@ -2,9 +2,9 @@
 
 import { z } from "zod";
 import signInFormSchema from "../_schemas/signInSchema";
-import { protectedRoutes, publicRoutes } from "@/routes";
 import { AuthError } from "next-auth";
 import { nextAuthSignIn } from "@/auth";
+import { publicRoutes } from "@/routes/routes";
 
 const signIn = async (values: z.infer<typeof signInFormSchema>) => {
   const validatedFields = signInFormSchema.safeParse(values);
@@ -19,7 +19,7 @@ const signIn = async (values: z.infer<typeof signInFormSchema>) => {
     await nextAuthSignIn("credentials", {
       email,
       password,
-      redirectTo: publicRoutes[0],
+      redirectTo: publicRoutes.events,
     });
   } catch (err) {
     if (err instanceof AuthError) {

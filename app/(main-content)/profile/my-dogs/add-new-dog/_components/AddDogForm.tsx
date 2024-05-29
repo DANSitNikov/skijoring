@@ -17,6 +17,7 @@ import { z } from "zod";
 import addDogFormSchema from "../_schemas/addDogFormSchema";
 import addDog from "../_actions/addDog";
 import { useRouter } from "next/navigation";
+import { protectedRoutes } from "@/routes/routes";
 
 const AddDogForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -37,7 +38,7 @@ const AddDogForm = () => {
         console.log(data.error);
         console.log(data.success);
 
-        router.push("/profile/my-dogs");
+        router.push(protectedRoutes.myDogs);
       });
     });
   };
