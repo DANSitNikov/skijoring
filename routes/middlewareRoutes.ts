@@ -5,6 +5,7 @@ export const middlewareProtectedRoutes = {
   editDog: "/profile/my-dogs/edit-dog/:id",
   createEvent: "/events/create-event",
   editEvent: "/events/:id/edit-event",
+  myEvents: "/my-events",
 };
 
 export const middlewarePublicRoutes = {

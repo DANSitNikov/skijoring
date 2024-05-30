@@ -43,23 +43,25 @@ const Header = ({ session }: { session: Session | null }) => {
         <Link
           href={publicRoutes.events}
           className={
-            checkIfLinkIsActive("events")
+            checkIfLinkIsActive(publicRoutes.events)
               ? "font-bold"
               : "font-normal"
           }
         >
           События
         </Link>
-        <Link
-          href="/sponsors"
-          className={
-            checkIfLinkIsActive("sponsors")
-              ? "font-bold"
-              : "font-normal"
-          }
-        >
-          Спонсоры
-        </Link>
+        {!!session && (
+          <Link
+            href={protectedRoutes.myEvents}
+            className={
+              checkIfLinkIsActive(protectedRoutes.myEvents)
+                ? "font-bold"
+                : "font-normal"
+            }
+          >
+            Мои события
+          </Link>
+        )}
       </div>
       <div>
         {session ? (
