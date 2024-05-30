@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/db";
+import { protectedRoutes } from "@/routes/routes";
 import { revalidatePath } from "next/cache";
 
 const editDog = async (dogId: string, name: string) => {
@@ -11,7 +12,7 @@ const editDog = async (dogId: string, name: string) => {
     },
   });
 
-  revalidatePath("/profile");
+  revalidatePath(protectedRoutes.myDogs);
 
   return { success: "Dog Edited!" };
 };

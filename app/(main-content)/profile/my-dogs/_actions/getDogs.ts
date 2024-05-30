@@ -5,7 +5,7 @@ import prisma from "@/lib/db";
 import { Dog } from "@/types/types";
 
 const sortByDate = (a: Dog, b: Dog) => {
-  return a.createdAt.getTime() - b.createdAt.getTime();
+  return b.createdAt.getTime() - a.createdAt.getTime();
 };
 
 const getDogs = async () => {

@@ -13,21 +13,23 @@ import Link from "next/link";
 import React, { memo } from "react";
 
 type EventCardProps = {
-  id: number;
+  id: string;
+  title: string;
+  description: string;
 };
 
-const EventCard = ({ id }: EventCardProps) => {
+const EventCard = ({ id, title, description }: EventCardProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Card Title - {id}</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>Card Content</p>
+        <p>...</p>
       </CardContent>
       <CardFooter>
-        <Button asChild>
+        <Button asChild className="ml-auto">
           <Link href={publicRoutes.event(String(id))}>Перейти</Link>
         </Button>
       </CardFooter>

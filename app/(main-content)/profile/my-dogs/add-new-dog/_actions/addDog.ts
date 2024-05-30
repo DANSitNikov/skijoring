@@ -1,11 +1,11 @@
 "use server";
 
 import { z } from "zod";
-import { SHA256, enc } from "crypto-js";
 import prisma from "@/lib/db";
 import addDogFormSchema from "../_schemas/addDogFormSchema";
 import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
+import { protectedRoutes } from "@/routes/routes";
 
 const addDog = async (values: z.infer<typeof addDogFormSchema>) => {
   const validatedFields = addDogFormSchema.safeParse(values);
@@ -23,7 +23,7 @@ const addDog = async (values: z.infer<typeof addDogFormSchema>) => {
     data: { ...values, userId: session?.user.id || "" },
   });
 
-  revalidatePath("/profile");
+  revalidatePath(protectedRoutes.myDogs);
 
   return { success: "Dog Added!" };
 };
