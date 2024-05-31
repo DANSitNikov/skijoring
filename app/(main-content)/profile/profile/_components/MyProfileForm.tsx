@@ -24,46 +24,46 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Session } from "next-auth";
-
-export const myProfileFormSchema = z.object({
-  firstName: z.string().min(1, { message: "Имя обязательно" }),
-  lastName: z.string().min(1, { message: "Фамилия обязателна" }),
-  dateOfBirth: z.date({
-    required_error: "Дата Рождения обязательна",
-  }),
-  sex: z.enum(["Мужской", "Женский"], {
-    required_error: "Пол обязателен",
-  }),
-});
+import myProfileFormSchema from "../schemas/myProfileFormSchema";
+import updateProfile from "../_actions/updateProfile";
+import { toast } from "sonner";
 
 const MyProfileForm = ({ session }: { session: Session | null }) => {
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof myProfileFormSchema>>({
     resolver: zodResolver(myProfileFormSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
-      // @ts-ignore
-      dateOfBirth: "",
+      dateOfBirth: new Date(),
       sex: "Мужской",
     },
   });
 
   function onSubmit(values: z.infer<typeof myProfileFormSchema>) {
-    console.log({ profile: values });
+    startTransition(() => {
+      updateProfile(values).then((data) => {
+        if (data.error) {
+          console.log(data.error);
+        } else if (data.success) {
+          toast.success(data.success);
+        }
+      });
+    });
   }
 
   useEffect(() => {
-    if (session) {
+    if (session && session?.user) {
       // @ts-ignore
       form.reset({
         firstName: session.user.firstName || "",
         lastName: session.user.lastName || "",
-        // @ts-ignore
-        dateOfBirth: new Date(session.user.dateOfBirth) || "",
+        dateOfBirth: new Date(session.user.dateOfBirth || ""),
         sex: session.user.sex || "",
       });
     }
@@ -74,8 +74,19 @@ const MyProfileForm = ({ session }: { session: Session | null }) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-2 w-[500px]"
+          className="w-[500px]"
         >
+          <FormItem>
+            <FormLabel>Email</FormLabel>
+            <FormControl>
+              <Input
+                placeholder="Email"
+                disabled
+                value={session?.user.email || ""}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
           <FormField
             control={form.control}
             name="firstName"
@@ -83,7 +94,11 @@ const MyProfileForm = ({ session }: { session: Session | null }) => {
               <FormItem>
                 <FormLabel>Имя</FormLabel>
                 <FormControl>
-                  <Input placeholder="Имя" {...field} />
+                  <Input
+                    placeholder="Имя"
+                    {...field}
+                    disabled={isPending}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -96,7 +111,11 @@ const MyProfileForm = ({ session }: { session: Session | null }) => {
               <FormItem>
                 <FormLabel>Фамилия</FormLabel>
                 <FormControl>
-                  <Input placeholder="Фамилия" {...field} />
+                  <Input
+                    placeholder="Фамилия"
+                    {...field}
+                    disabled={isPending}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -112,6 +131,7 @@ const MyProfileForm = ({ session }: { session: Session | null }) => {
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
+                        disabled={isPending}
                         variant={"outline"}
                         className={cn(
                           "w-full pl-3 text-left font-normal",
@@ -150,6 +170,7 @@ const MyProfileForm = ({ session }: { session: Session | null }) => {
                 <FormLabel>Пол</FormLabel>
                 <FormControl>
                   <RadioGroup
+                    disabled={isPending}
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                     className="flex space-x-1"
@@ -176,7 +197,11 @@ const MyProfileForm = ({ session }: { session: Session | null }) => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isPending}
+          >
             Сохранить
           </Button>
         </form>
