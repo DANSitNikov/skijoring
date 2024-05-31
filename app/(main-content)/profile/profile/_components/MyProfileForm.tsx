@@ -85,7 +85,6 @@ const MyProfileForm = ({ session }: { session: Session | null }) => {
                 value={session?.user.email || ""}
               />
             </FormControl>
-            <FormMessage />
           </FormItem>
           <FormField
             control={form.control}

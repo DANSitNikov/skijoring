@@ -63,7 +63,6 @@ model Dog {
   userId       String
   createdAt    DateTime       @default(now())
   user         User           @relation(fields: [userId], references: [id])
-  attending    Attending[]
   attendingDog AttendingDog[]
 
   @@map("dogs")
@@ -84,13 +83,11 @@ model Event {
 
 model Attending {
   id      String         @id @default(uuid())
-  event   Event          @relation(fields: [eventId], references: [id])
-  user    User           @relation(fields: [userId], references: [id])
+  event   Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   eventId String
   userId  String
   dogs    AttendingDog[]
-  Dog     Dog?           @relation(fields: [dogId], references: [id])
-  dogId   String?
 
   @@unique([eventId, userId])
   @@map("attending")
@@ -98,8 +95,8 @@ model Attending {
 
 model AttendingDog {
   id          String    @id @default(cuid())
-  attending   Attending @relation(fields: [attendingId], references: [id])
-  dog         Dog       @relation(fields: [dogId], references: [id])
+  attending   Attending @relation(fields: [attendingId], references: [id], onDelete: Cascade)
+  dog         Dog       @relation(fields: [dogId], references: [id], onDelete: Cascade)
   attendingId String
   dogId       String
 
