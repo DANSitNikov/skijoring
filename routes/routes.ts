@@ -9,6 +9,7 @@ export const protectedRoutes = {
   addNewDog: "/profile/my-dogs/add-new-dog",
   editDog: (dogId: string) => `/profile/my-dogs/edit-dog/${dogId}`,
   myEvents: "/my-events",
+  eventRegistration: (id: string) => `/events/${id}/registration`,
 };
 
 export const publicRoutes = {

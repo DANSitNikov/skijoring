@@ -3,7 +3,7 @@ import getEvent from "./_actions/getEvent";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { adminRoutes } from "@/routes/routes";
+import { adminRoutes, protectedRoutes } from "@/routes/routes";
 import { auth } from "@/auth";
 import { UserRole } from "@prisma/client";
 
@@ -34,6 +34,13 @@ const page = async ({ params: { id } }: any) => {
         {format(event.success.startDate, "dd/MM/yyyy")}-
         {format(event.success.endDate, "dd/MM/yyyy")}
       </div>
+      <Button asChild>
+        <Link
+          href={protectedRoutes.eventRegistration(event.success.id)}
+        >
+          Зарегистрироваться
+        </Link>
+      </Button>
     </div>
   );
 };

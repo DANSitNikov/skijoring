@@ -23,7 +23,10 @@ const createEvent = async (
   }
 
   await prisma.event.create({
-    data: { ...values, userId: session.user.id },
+    data: {
+      ...values,
+      createdBy: { connect: { id: session.user.id } },
+    },
   });
 
   revalidatePath(publicRoutes.events);

@@ -58,11 +58,13 @@ model Account {
 }
 
 model Dog {
-  id        String   @id @default(cuid())
-  name      String
-  userId    String
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  id           String         @id @default(cuid())
+  name         String
+  userId       String
+  createdAt    DateTime       @default(now())
+  user         User           @relation(fields: [userId], references: [id])
+  attending    Attending[]
+  attendingDog AttendingDog[]
 
   @@map("dogs")
 }
@@ -75,18 +77,32 @@ model Event {
   endDate     DateTime
   createdBy   User        @relation(name: "createdBy", fields: [userId], references: [id])
   userId      String
-  Attending   Attending[]
+  attending   Attending[]
 
   @@map("events")
 }
 
 model Attending {
-  id      String @id @default(uuid())
-  event   Event  @relation(fields: [eventId], references: [id])
-  user    User   @relation(fields: [userId], references: [id])
+  id      String         @id @default(uuid())
+  event   Event          @relation(fields: [eventId], references: [id])
+  user    User           @relation(fields: [userId], references: [id])
   eventId String
   userId  String
+  dogs    AttendingDog[]
+  Dog     Dog?           @relation(fields: [dogId], references: [id])
+  dogId   String?
 
   @@unique([eventId, userId])
   @@map("attending")
+}
+
+model AttendingDog {
+  id          String    @id @default(cuid())
+  attending   Attending @relation(fields: [attendingId], references: [id])
+  dog         Dog       @relation(fields: [dogId], references: [id])
+  attendingId String
+  dogId       String
+
+  @@unique([attendingId, dogId])
+  @@map("attending_dog")
 }
