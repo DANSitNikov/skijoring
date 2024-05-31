@@ -3,7 +3,7 @@ import getEvent from "./_actions/getEvent";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { protectedRoutes } from "@/routes/routes";
+import { adminRoutes } from "@/routes/routes";
 
 const page = async ({ params: { id } }: any) => {
   const event = await getEvent(id);
@@ -19,7 +19,7 @@ const page = async ({ params: { id } }: any) => {
           {event.success.title}
         </h1>
         <Button asChild>
-          <Link href={protectedRoutes.editEvent(id)}>
+          <Link href={adminRoutes.editEvent(id)}>
             редактировать событие
           </Link>
         </Button>

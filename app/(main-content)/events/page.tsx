@@ -2,7 +2,7 @@ import React from "react";
 import EventCard from "./_components/EventCard";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { protectedRoutes } from "@/routes/routes";
+import { adminRoutes } from "@/routes/routes";
 import getEvents from "./_actions/getEvents";
 
 const page = async () => {
@@ -15,7 +15,7 @@ const page = async () => {
           События
         </h1>
         <Button asChild>
-          <Link href={protectedRoutes.createEvent}>
+          <Link href={adminRoutes.createEvent}>
             создать новое событие
           </Link>
         </Button>
