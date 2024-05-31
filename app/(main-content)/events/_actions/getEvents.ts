@@ -1,8 +1,7 @@
 "use server";
 
-import { auth } from "@/auth";
 import prisma from "@/lib/db";
-import { Event } from "@/types/types";
+import { Event } from "@prisma/client";
 
 const sortByDate = (a: Event, b: Event) => {
   return b.startDate.getTime() - a.startDate.getTime();

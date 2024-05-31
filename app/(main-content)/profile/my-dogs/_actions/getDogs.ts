@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import prisma from "@/lib/db";
-import { Dog } from "@/types/types";
+import { Dog } from "@prisma/client";
 
 const sortByDate = (a: Dog, b: Dog) => {
   return b.createdAt.getTime() - a.createdAt.getTime();
