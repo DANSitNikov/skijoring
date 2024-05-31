@@ -4,8 +4,11 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { adminRoutes } from "@/routes/routes";
+import { auth } from "@/auth";
+import { UserRole } from "@prisma/client";
 
 const page = async ({ params: { id } }: any) => {
+  const session = await auth();
   const event = await getEvent(id);
 
   if (event.error || !event.success) {
@@ -18,11 +21,13 @@ const page = async ({ params: { id } }: any) => {
         <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight mb-2">
           {event.success.title}
         </h1>
-        <Button asChild>
-          <Link href={adminRoutes.editEvent(id)}>
-            редактировать событие
-          </Link>
-        </Button>
+        {session?.user.role === UserRole.ADMIN && (
+          <Button asChild>
+            <Link href={adminRoutes.editEvent(id)}>
+              редактировать событие
+            </Link>
+          </Button>
+        )}
       </div>
       <h5>{event.success.description}</h5>
       <div>

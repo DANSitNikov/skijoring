@@ -4,8 +4,11 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { adminRoutes } from "@/routes/routes";
 import getEvents from "./_actions/getEvents";
+import { auth } from "@/auth";
+import { UserRole } from "@prisma/client";
 
 const page = async () => {
+  const session = await auth();
   const events = await getEvents();
 
   return (
@@ -14,11 +17,13 @@ const page = async () => {
         <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight">
           События
         </h1>
-        <Button asChild>
-          <Link href={adminRoutes.createEvent}>
-            создать новое событие
-          </Link>
-        </Button>
+        {session?.user.role === UserRole.ADMIN && (
+          <Button asChild>
+            <Link href={adminRoutes.createEvent}>
+              создать новое событие
+            </Link>
+          </Button>
+        )}
       </div>
       <div className="grid grid-cols-2 gap-4">
         {events?.map(({ id, title, description }, index) => (
