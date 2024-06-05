@@ -6,14 +6,20 @@ import Link from "next/link";
 import { adminRoutes, protectedRoutes } from "@/routes/routes";
 import { auth } from "@/auth";
 import { UserRole } from "@prisma/client";
+import getMyEvents from "../../my-events/_actions/getMyEvents";
 
 const page = async ({ params: { id } }: any) => {
   const session = await auth();
   const event = await getEvent(id);
+  const myEvents = await getMyEvents();
 
   if (event.error || !event.success) {
     return <div>not found</div>;
   }
+
+  const myEventIndex = myEvents?.findIndex(
+    ({ event: { id } }) => id === event.success.id
+  );
 
   return (
     <div>
@@ -35,11 +41,21 @@ const page = async ({ params: { id } }: any) => {
         {format(event.success.endDate, "dd/MM/yyyy")}
       </div>
       <Button asChild>
-        <Link
-          href={protectedRoutes.eventRegistration(event.success.id)}
-        >
-          Зарегистрироваться
-        </Link>
+        {myEvents &&
+        typeof myEventIndex === "number" &&
+        myEventIndex !== -1 ? (
+          <Link
+            href={protectedRoutes.myEvent(myEvents[myEventIndex].id)}
+          >
+            Перейти
+          </Link>
+        ) : (
+          <Link
+            href={protectedRoutes.eventRegistration(event.success.id)}
+          >
+            Зарегистрироваться
+          </Link>
+        )}
       </Button>
     </div>
   );
